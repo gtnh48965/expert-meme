@@ -8,7 +8,7 @@ import config
 import os
 telebot.apihelper.proxy = config.proxy
 token = os.environ.get('bot_token')
-bot.run(str(token)
+
 
 no_les='пар нет'
 no_group ='Нет токой группы '
