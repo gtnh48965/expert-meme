@@ -5,7 +5,7 @@ from bs4 import BeautifulSoup
 import datetime
 from typing import List, Tuple
 import config
-import os
+
 telebot.apihelper.proxy = config.proxy
 token = '1000855864:AAFdF7HMvV14s9rcad1gYhCRHVVcTQI6Jrk'
 
