@@ -1,15 +1,13 @@
 import requests
+
 import telebot
-from telebot import apihelper
 from bs4 import BeautifulSoup
 import datetime
 from typing import List, Tuple
 
-
-
+telebot.apihelper.proxy = {'https': 'https://51.68.189.52:3128'}
 token = '1000855864:AAFdF7HMvV14s9rcad1gYhCRHVVcTQI6Jrk'
-
-
+Xday = ['1day', '2day', '3day', '4day', '5day', '6day', '7day']
 no_les='пар нет'
 no_group ='Нет токой группы '
 no_write = 'Неправильный ввод '
@@ -24,7 +22,11 @@ day_p = ['monday',
          'saturday',
          'sunday']
 
-
+wrong = 'Ошибка, повторите запрос правильно.'
+wrong2 = 'Ошибка, повторите запрос, проверив номер группы и четность недели. (формат /monday %(0-2) X1111) {ps 0 чет и нечет, 1 чет, 2 нечет}'
+wrong3 = 'Ошибка, повторите запрос, проверив номер группы. (формат /near X1111)'
+wrong4 = 'Ошибка, повторите запрос, проверив номер группы. (формат /tommorow X1111)'
+wrong5 = 'Ошибка, повторите запрос, проверив номер группы. (формат /all X1111)'
 cache = dict()  # кэш
 
 
@@ -54,13 +56,13 @@ def get_parity(day: datetime.date) -> int:
 
 
 def get_page(group: str, week:str='') ->str:
-    day = 'https://www.ifmo.ru/ru/schedule/0',
+    dom = 'http://www.ifmo.ru/ru/schedule'
     if week == '0':
         week = ''
     if week:
         week = str(week) + '/'
     url = '{domain}/0/{group}/{week}raspisanie_zanyatiy_{group}.htm'.format(
-        domain =day,
+        domain = dom,
         group = group,
         week = week)
     response = requests.get(url)
@@ -77,7 +79,7 @@ def parse_schedule_for_a_weekday(web_page : str, day: str) -> Tuple[list, list, 
     if day == '2':
         day = 'tuesday'
     if day == '3':
-        day = 'wednesday'
+        day = 'wednesda'
     if day == '4':
         day = 'thursday'
     if day == '5':
@@ -92,7 +94,7 @@ def parse_schedule_for_a_weekday(web_page : str, day: str) -> Tuple[list, list, 
         schedule_table = soup.find("table", attrs={"id": "1day"})
     if day == 'tuesday':
         schedule_table = soup.find("table", attrs={"id": "2day"})
-    if day == 'wednesday':
+    if day == 'wednesda':
         schedule_table = soup.find("table", attrs={"id": "3day"})
     if day == 'thursday':
         schedule_table = soup.find("table", attrs={"id": "4day"})
@@ -181,7 +183,7 @@ def get_near_lesson(message):
         minutes = time.minute
         if day ==7:
             day=1
-        web_page = get_page(group,week)
+        web_page = get_page(group, week)
         parse = parse_schedule_for_a_weekday(web_page, str(day))
         times_lst, locations_lst, lessons_lst = parse
         for time, location, lesson in zip(times_lst, locations_lst, lessons_lst):
@@ -200,7 +202,7 @@ def get_near_lesson(message):
             while parse == None:
                 if(day<6):
                     day +=1
-                    parse = parse_schedule_for_a_weekday(web_page,str(day))
+                    parse = parse_schedule_for_a_weekday(web_page, str(day))
                 else:
                     day=0
                     week = -(week - 3)
@@ -227,8 +229,8 @@ def get_tommorow(message):
         elif day ==2:
             day ='tuesday'
         elif day == 3:
-            day = 'wednesday'
-        elif day ==4:
+            day = 'wednesda'
+        elif day == 4:
             day = 'thursday'
         elif day==5:
             day = 'friday'
