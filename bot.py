@@ -7,7 +7,7 @@ from typing import List, Tuple
 import config
 import os
 telebot.apihelper.proxy = config.proxy
-token = os.environ.get('bot_token')
+token = '1000855864:AAFdF7HMvV14s9rcad1gYhCRHVVcTQI6Jrk'
 
 
 no_les='пар нет'
