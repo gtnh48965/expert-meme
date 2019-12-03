@@ -54,13 +54,13 @@ def get_parity(day: datetime.date) -> int:
 
 
 def get_page(group: str, week:str='') ->str:
-
+    day = 'https://www.ifmo.ru/ru/schedule/0',
     if week == '0':
         week = ''
     if week:
         week = str(week) + '/'
     url = '{domain}/0/{group}/{week}raspisanie_zanyatiy_{group}.htm'.format(
-        domain ='https://www.ifmo.ru/ru/schedule/0',
+        domain =day,
         group = group,
         week = week)
     response = requests.get(url)
