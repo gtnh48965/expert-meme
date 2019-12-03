@@ -5,9 +5,9 @@ from bs4 import BeautifulSoup
 import datetime
 from typing import List, Tuple
 import config
-
+import os
 telebot.apihelper.proxy = config.proxy
-token = config.token
+token = os.environ.get('bot_token')
 
 no_les='пар нет'
 no_group ='Нет токой группы '
@@ -59,7 +59,7 @@ def get_page(group: str, week:str='') ->str:
     if week:
         week = str(week) + '/'
     url = '{domain}/0/{group}/{week}raspisanie_zanyatiy_{group}.htm'.format(
-        domain = config.dom,
+        domain ='https://www.ifmo.ru/ru/schedule/0',
         group = group,
         week = week)
     response = requests.get(url)
